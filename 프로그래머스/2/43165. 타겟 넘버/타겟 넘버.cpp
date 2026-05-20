@@ -2,22 +2,25 @@
 #include <vector>
 
 using namespace std;
-bool isVisited[21];
-int result=0;
 
-void dfs(vector<int> numbers, int target, int cnt, int curValue){
-    if(cnt==numbers.size()) {
-        if(curValue==target) result++;
+int val=0;
+
+void dfs(vector<int> numbers, int target, int value, int cnt){
+    
+    if(cnt==numbers.size()){
+        if(target==value) val++;
         return;
     }
-    dfs(numbers,target,cnt+1,curValue+numbers[cnt]);
-    dfs(numbers,target,cnt+1,curValue-numbers[cnt]);
+    
+    dfs(numbers,target,value+numbers[cnt], cnt+1);
+    dfs(numbers,target,value-numbers[cnt], cnt+1);
     
 }
 
 int solution(vector<int> numbers, int target) {
     
-    dfs(numbers, target, 0,0);
-    int answer = result;
+    dfs(numbers, target, 0, 0);
+        
+    int answer = val;
     return answer;
 }
