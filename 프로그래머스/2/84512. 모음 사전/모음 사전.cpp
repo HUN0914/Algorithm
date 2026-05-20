@@ -3,26 +3,29 @@
 
 using namespace std;
 
-char wording[5]={'A','E','I','O','U'};
-bool isEnd=false;
-int value;
-int answer;
+int cnt=-1;
+int answer=0;
+string target="";
+string aeiou="AEIOU";
 
-void dfs(string word, string createWord){    
-    if(createWord==word){
-        answer=value;
+void dfs(string word, string cur){
+    
+    cnt++;
+    
+    if(word==cur){
+        answer=cnt;
         return;
     }
     
-    if(createWord.size()>=5) return;
+    if(cur.length()>=5) return;
     
     for(int i=0; i<5; i++){
-        value++;
-        dfs(word,createWord+wording[i]);
+        dfs(word,cur+aeiou[i]);
     }
 }
-
+    
 int solution(string word) {
-    dfs(word,"");
+    string cur="";
+    dfs(word, cur);
     return answer;
 }
