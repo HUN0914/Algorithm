@@ -1,0 +1,112 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    static int N;
+    static int[][] board;
+    static boolean[][] visited;
+
+    static int startY, startX;
+    static int endY, endX;
+
+    static int[] dy ={-1,1,0,0};
+    static int[] dx ={0,0,-1,1};
+
+    static class Info{
+        int y;
+        int x;
+        int time;
+
+        Info(int y, int x, int time){
+            this.y=y;
+            this.x=x;
+            this.time=time;
+        }
+    }
+
+    static int bfs(){
+        Queue<Info> q = new LinkedList<>();
+
+        q.offer(new Info(startY, startX, 0));
+        visited[startY][startX] = true;
+
+        while(!q.isEmpty()){
+            Info current = q.poll();
+
+            int y =current.y;
+            int x= current.x;
+            int time= current.time;
+
+            if ( y== endY&& x==endX) return time;
+            
+            boolean needWait = false;
+
+            for(int k=0; k<4; k++){
+                int ny=y+dy[k];
+                int nx=x+dx[k];
+
+                if(ny<0 || nx<0 || ny>=N || nx >=N) continue;
+
+                if(board[ny][nx] == 1 || visited[ny][nx]) continue;
+
+                if (board[ny][nx]==2) {
+                    if(time%3!=2) {
+                        needWait =true;
+                        continue;
+                    }
+                }
+
+                visited[ny][nx]=true;
+                q.offer(new Info(ny,nx,time+1));
+            }
+
+            if(needWait){
+                q.offer(new Info(y,x,time+1));
+            }
+        }
+
+        return -1;
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+
+        StringBuilder answer = new StringBuilder();
+
+        for(int testCase =1; testCase <=T; testCase++){
+            N=Integer.parseInt(br.readLine());
+
+            board = new int[N][N];
+            visited = new boolean[N][N];
+
+            for (int i=0; i<N; i++){
+                StringTokenizer st = new StringTokenizer(br.readLine());
+
+                for(int j=0; j<N; j++){
+                    board[i][j] = Integer.parseInt(st.nextToken());
+                }
+            }
+
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            startY = Integer.parseInt(st.nextToken());
+            startX = Integer.parseInt(st.nextToken());
+
+            st = new StringTokenizer(br.readLine());
+
+            endY = Integer.parseInt(st.nextToken());
+            endX = Integer.parseInt(st.nextToken());
+
+            answer.append("#")
+                    .append(testCase)
+                    .append(" ")
+                    .append(bfs())
+                    .append("\n");
+
+        }
+        System.out.println(answer);
+    }
+}
