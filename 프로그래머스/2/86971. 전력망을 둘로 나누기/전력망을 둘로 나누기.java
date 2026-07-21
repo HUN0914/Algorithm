@@ -3,13 +3,14 @@ import java.io.*;
 
 class Solution {
     
-    int answer=Integer.MAX_VALUE;
-     
-    void bfs(int n, int[][] wires, int exclude){
+    int answer = Integer.MAX_VALUE;
+    
+    void bfs(int n, int[][] wires, int exclude) {
         
         boolean[] isVisited = new boolean[n+1];
         
         List<List<Integer>> lists = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
         
         for(int i=0; i<=n; i++) lists.add(new ArrayList<>());
         
@@ -22,9 +23,7 @@ class Solution {
             lists.get(second).add(first);
         }
         
-        Queue<Integer> q = new LinkedList<>();
-        
-        int cnt=1;            
+        int cnt=1;
         q.offer(1);
         isVisited[1]=true;
         
@@ -32,6 +31,8 @@ class Solution {
             int curQ=q.poll();
             
             for(int edge : lists.get(curQ)){
+                lists.get(curQ);
+                
                 if(isVisited[edge]) continue;
                 
                 isVisited[edge]=true;
@@ -39,14 +40,14 @@ class Solution {
                 q.offer(edge);
             }
         }
-        int absValue=Math.abs(n-2*cnt);
-        answer=Math.min(answer,absValue); 
+        
+        int absValue = Math.abs(n-2*cnt);
+        answer=Math.min(answer,absValue);
     }
     
     public int solution(int n, int[][] wires) {
         
-        for(int i=0; i<n; i++) bfs(n,wires,i);
-        
+        for(int i=0; i<n; i++) bfs (n,wires,i);
         return answer;
     }
 }
